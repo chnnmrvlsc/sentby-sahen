@@ -6,9 +6,8 @@ window.SBS_CONFIG = {
   shopName: "Sent by Sahen",
   igHandle: "",            // e.g. "sentbysahen" (shown after ordering). Leave empty to hide.
 
-  // --- Backend (leave empty to run in DEMO mode: orders stay in this browser only) ---
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+supabaseUrl: "https://xuhunisrtszfhldzebqd.supabase.co",
+supabaseAnonKey: "sb_publishable_VXRAsgSsXtGrPhTw_2j04Q_Ca7q1Ngz",
 
   // --- Prices (product only, delivery fee is NOT included) ---
   prices: {
