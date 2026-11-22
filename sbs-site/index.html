@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sent by Sahen · Cross-stitch calendars &amp; prints</title>
+<meta name="description" content="Make your own cross-stitch photo calendar or print. Pick a size, upload a photo, stitch your message.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./"><img src="assets/logo.png" alt="Sent by Sahen"></a>
+  <button class="link-btn" id="track-open" type="button">Track my order</button>
+</header>
+
+<div class="notice" role="note">
+  <span class="x">✕</span> Delivery fee is shouldered by the buyer and is <b>not included</b> in the prices below.
+</div>
+
+<main class="wrap">
+  <ol class="stepper" id="stepper" aria-label="Order steps"></ol>
+
+  <div class="layout">
+    <div class="panel" id="panel">
+
+      <!-- 0 SIZE & FRAME -->
+      <section data-step="0">
+        <h2>Pick your size</h2>
+        <p class="sub">Prices are for the product only.</p>
+        <div class="cards two" id="size-cards"></div>
+        <h2 class="mt">Frame?</h2>
+        <p class="sub">Dark walnut wood frame, same size as your print.</p>
+        <div class="cards two" id="frame-cards"></div>
+        <div class="nav"><span></span><button class="btn" data-next disabled>Next: choose template</button></div>
+      </section>
+
+      <!-- 1 TEMPLATE -->
+      <section data-step="1" hidden>
+        <h2>Choose a template</h2>
+        <p class="sub">Samples below use a placeholder picture. Your photo goes in next.</p>
+        <div class="cards two" id="template-cards"></div>
+        <div class="nav"><button class="btn ghost" data-back>Back</button><button class="btn" data-next disabled>Next: upload photo</button></div>
+      </section>
+
+      <!-- 2 PHOTO -->
+      <section data-step="2" hidden>
+        <h2>Upload your photo</h2>
+        <p class="sub" id="photo-sub">Clear, bright photos stitch up best.</p>
+        <label class="drop" id="drop" data-hover>
+          <input type="file" id="photo-input" accept="image/*" hidden>
+          <span class="drop-big">Tap to choose a photo</span>
+          <span class="drop-small">JPG or PNG from your phone or computer</span>
+        </label>
+        <div class="photo-status" id="photo-status" hidden></div>
+        <div class="photo-preview" id="photo-preview" hidden><img id="photo-thumb" alt="Your photo"></div>
+        <label class="check" id="cut-toggle-wrap" hidden><input type="checkbox" id="cut-toggle" checked> Remove the background automatically</label>
+        <div id="cut-tools" hidden>
+          <label class="field"><span>Cut-out: keep less &nbsp;←&nbsp; &nbsp;→&nbsp; keep more</span><input type="range" id="cut-keep" min="0" max="1" step="0.01" value="0.55"></label>
+          <p class="sub">If parts of the person are missing, slide to the right. If too much background is left, slide to the left. You can also touch it up by hand.</p>
+          <button class="btn ghost small" id="touchup-btn" type="button">Touch up by hand</button>
+        </div>
+        <div class="nav"><button class="btn ghost" data-back>Back</button><button class="btn" data-next disabled>Next: design</button></div>
+      </section>
+
+      <!-- 3 DESIGN -->
+      <section data-step="3" hidden>
+        <h2>Design it</h2>
+        <div class="editor">
+          <div class="editor-stage">
+            <div class="paper-frame" id="paper-frame"><div class="paper" id="paper"><canvas id="editor-canvas"></canvas></div></div>
+            <div class="mode-toggle" role="group" aria-label="What to drag">
+              <button type="button" class="seg on" data-mode="text">Move text</button>
+              <button type="button" class="seg" data-mode="photo">Move photo</button>
+            </div>
+            <p class="hint" id="editor-hint">Drag your text to where you want it.</p>
+          </div>
+          <div class="editor-tools">
+            <details open class="tool">
+              <summary>1 · Thread colors</summary>
+              <p class="sub" id="thread-sub"></p>
+              <div class="threads" id="threads"></div>
+            </details>
+            <details open class="tool">
+              <summary>2 · Stitched text</summary>
+              <p class="sub">Free: <b>i love you</b>, <b>with love</b>, or <b>1–2 initials</b>. Anything else is customized text.</p>
+              <div class="chips" id="add-chips"></div>
+              <p class="sub mt-s">Symbols (they count as letters)</p>
+              <div class="symbols" id="symbols"></div>
+              <div id="item-list" class="item-list"></div>
+              <div id="item-editor" class="item-editor" hidden></div>
+              <div class="count-line" id="count-line"></div>
+            </details>
+            <details class="tool" id="photo-tools">
+              <summary>3 · Photo &amp; calendar</summary>
+              <label class="field"><span>Zoom photo</span><input type="range" id="zoom" min="1" max="3" step="0.02" value="1"></label>
+              <button class="btn ghost small" id="touchup-btn2" type="button" hidden>Fix the cut-out</button>
+              <div id="cal-tools" hidden>
+                <div class="row">
+                  <label class="field"><span>Month</span><select id="cal-month"></select></label>
+                  <label class="field"><span>Year</span><select id="cal-year"></select></label>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="nav"><button class="btn ghost" data-back>Back</button><button class="btn" data-next>Next: your details</button></div>
+      </section>
+
+      <!-- 4 DETAILS -->
+      <section data-step="4" hidden>
+        <h2>Your details</h2>
+        <div class="form">
+          <label class="field"><span>Your name</span><input id="f-name" autocomplete="name" placeholder="Full name"></label>
+          <label class="field"><span>Instagram username</span><input id="f-ig" placeholder="@yourname" autocapitalize="off"><small>We'll message you here about your order.</small></label>
+          <label class="check"><input type="checkbox" id="f-gift"> This is a gift (ship to someone else)</label>
+          <div id="gift-note" class="sub" hidden>Tell us who it's for. We'll ship it there.</div>
+          <label class="field"><span id="l-rname">Recipient name</span><input id="f-rname" placeholder="Name on the parcel"></label>
+          <label class="field"><span>Recipient contact number</span><input id="f-rphone" inputmode="tel" placeholder="09XX XXX XXXX"><small>The courier needs this to deliver.</small></label>
+          <label class="field"><span>Complete delivery address</span><textarea id="f-raddr" rows="3" placeholder="House no., street, barangay, city/municipality, province, ZIP"></textarea></label>
+        </div>
+        <h3 class="mt">Tracking number</h3>
+        <p class="sub">Once your order ships, do you want to see the tracking number?</p>
+        <div class="cards two" id="track-cards"></div>
+        <div class="nav"><button class="btn ghost" data-back>Back</button><button class="btn" data-next>Next: preview</button></div>
+      </section>
+
+      <!-- 5 REVIEW -->
+      <section data-step="5" hidden>
+        <h2>Preview your order</h2>
+        <p class="sub">This is exactly what we'll make. Go back if you want to change anything.</p>
+        <div class="review">
+          <div class="review-art"><div class="paper-frame" id="review-frame"><div class="paper"><canvas id="review-canvas"></canvas></div></div></div>
+          <div class="review-info" id="review-info"></div>
+        </div>
+        <label class="check big"><input type="checkbox" id="f-agree"> I understand that the <b>delivery fee is shouldered by me</b> and is not included in the total.</label>
+        <div class="nav"><button class="btn ghost" data-back>Edit design</button><button class="btn" data-next disabled>Proceed to payment</button></div>
+      </section>
+
+      <!-- 6 PAY -->
+      <section data-step="6" hidden>
+        <h2>Pay your downpayment</h2>
+        <p class="sub">70% now. The remaining 30% (plus delivery fee) is sent before we ship out.</p>
+        <div class="pay">
+          <div class="qr"><img src="assets/gcash-qr.png" alt="GCash InstaPay QR"><small>Scan with GCash or any InstaPay-enabled app.</small></div>
+          <div class="pay-info">
+            <div class="amount-card"><span>Pay now (70%)</span><b id="pay-down">₱0</b></div>
+            <p class="sub" id="pay-rest"></p>
+            <label class="drop small" data-hover>
+              <input type="file" id="proof-input" accept="image/*" hidden>
+              <span class="drop-big" id="proof-label">Upload screenshot of your payment</span>
+            </label>
+            <img id="proof-thumb" class="proof-thumb" alt="" hidden>
+          </div>
+        </div>
+        <div class="error" id="submit-error" hidden></div>
+        <div class="nav"><button class="btn ghost" data-back>Back</button><button class="btn" id="submit-btn" disabled>Submit my order</button></div>
+      </section>
+
+      <!-- 7 DONE -->
+      <section data-step="7" hidden>
+        <div class="done">
+          <div class="done-x">✕ ✕ ✕</div>
+          <h2>Thank you! Your order is in.</h2>
+          <p>Your order code</p>
+          <div class="code" id="done-code">SBS-XXXXXX</div>
+          <button class="btn ghost" id="copy-code" type="button">Copy code</button>
+          <p class="sub" id="done-msg"></p>
+          <p class="sub">We'll check your downpayment and message you on Instagram. Keep this code to check your order status anytime.</p>
+          <div class="nav center"><button class="btn" id="new-order" type="button">Make another order</button><button class="btn ghost" id="done-track" type="button">Track this order</button></div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="summary" id="summary" aria-live="polite"></aside>
+  </div>
+</main>
+
+<footer class="foot"><span>Sent by Sahen</span> · stitched with care</footer>
+
+<dialog id="track-modal">
+  <form method="dialog" class="modal-in" id="track-form">
+    <h3>Track my order</h3>
+    <label class="field"><span>Order code</span><input id="t-code" placeholder="SBS-XXXXXX" autocapitalize="characters"></label>
+    <label class="field"><span>Instagram username</span><input id="t-ig" placeholder="@yourname" autocapitalize="off"></label>
+    <div id="t-result" class="t-result"></div>
+    <div class="nav"><button class="btn ghost" value="cancel" formnovalidate>Close</button><button class="btn" id="t-go" type="button">Check status</button></div>
+  </form>
+</dialog>
+
+<dialog id="touch-modal">
+  <div class="modal-in">
+    <h3>Touch up the cut-out</h3>
+    <p class="sub">Paint over spots to erase them, or switch to "Bring back" to restore parts of the photo.</p>
+    <div class="touch-stage"><canvas id="touch-canvas"></canvas></div>
+    <div class="mode-toggle" style="margin:.8rem auto"><button type="button" class="seg on" data-tmode="erase">Erase</button><button type="button" class="seg" data-tmode="restore">Bring back</button></div>
+    <label class="field"><span>Brush size</span><input type="range" id="brush" min="6" max="90" value="30"></label>
+    <div class="nav"><button class="btn ghost small" id="touch-reset" type="button">Reset touch-ups</button><button class="btn" id="touch-done" type="button">Done</button></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="js/config.js"></script>
+<script src="js/symbols.js"></script>
+<script src="js/alphabet.js"></script>
+<script src="js/render.js"></script>
+<script src="js/cutout.js"></script>
+<script src="js/store.js"></script>
+<script src="js/needle.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
